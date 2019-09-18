@@ -1,6 +1,6 @@
 package com.mrfofo.ticket.router;
 
-import com.mrfofo.ticket.handler.HelloHandler;
+import com.mrfofo.ticket.handler.TicketHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -11,9 +11,9 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 
 @Configuration
-public class HelloRouter {
+public class TicketRouter {
     @Bean
-    public RouterFunction<ServerResponse> route(HelloHandler helloHandler) {
-        return RouterFunctions.route(GET("/").and(accept(MediaType.TEXT_PLAIN)), helloHandler::hello);
+    public RouterFunction<ServerResponse> route(TicketHandler helloHandler) {
+        return RouterFunctions.route(GET("/").and(accept(MediaType.APPLICATION_JSON_UTF8)), helloHandler::hello);
     }
 }
