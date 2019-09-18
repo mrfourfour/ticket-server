@@ -1,0 +1,19 @@
+package com.mrfofo.ticket.router;
+
+import com.mrfofo.ticket.handler.HelloHandler;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.RouterFunctions;
+import org.springframework.web.reactive.function.server.ServerResponse;
+
+import static org.springframework.web.reactive.function.server.RequestPredicates.*;
+
+@Configuration
+public class HelloRouter {
+    @Bean
+    public RouterFunction<ServerResponse> route(HelloHandler helloHandler) {
+        return RouterFunctions.route(GET("/").and(accept(MediaType.TEXT_PLAIN)), helloHandler::hello);
+    }
+}
