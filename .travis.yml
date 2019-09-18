@@ -1,0 +1,14 @@
+language: java
+jdk:
+  - openjdk12
+branches:
+  only:
+    - master
+    - beta
+
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.gradle'
+
+script: "./gradlew clean build"
