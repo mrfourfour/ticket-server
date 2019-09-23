@@ -25,12 +25,16 @@ public class TicketApplicationTests {
     @Test
     public void getTicketTest() {
         Ticket ticket = Ticket.builder()
-                .id("Ticket-1")
-                .product(Product.builder().id("Product-1").name("요트한직?").build())
-                .status("미사용")
+                .id("Ticket-2")
+                .productId("Product-9")
+                .status(Ticket.TicketStatus.NOT_USED.getValue())
+                .date("2019-01-13")
+                .qrData("sdfsdf")
+                .amount(5)
+                .totalPrice(27000)
                 .build();
 
-        webTestClient.get().uri("/")
+        webTestClient.get().uri("/api/ticket/1")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .exchange()
                 .expectStatus().isOk()
