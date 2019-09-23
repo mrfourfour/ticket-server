@@ -2,7 +2,6 @@ FROM openjdk:12
 LABEL maintainer="j40f893@gmail.com"
 VOLUME /tmp
 EXPOSE 8080
-ENV DYNAMODB_ENDPOINT=
 ARG JAR_FILE=build/libs/ticket-0.0.1-SNAPSHOT.jar
 ADD ${JAR_FILE} ticket.jar
 
