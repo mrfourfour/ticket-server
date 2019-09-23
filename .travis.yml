@@ -1,0 +1,25 @@
+language: java
+
+services:
+  - docker
+
+jdk:
+  - openjdk12
+
+branches:
+  only:
+  - master
+  - development
+
+cache:
+  directories:
+  - "$HOME/.m2/repository"
+  - "$HOME/.gradle"
+
+script: "./gradlew clean build"
+deploy:
+  provider: script
+  script: bash docker_push
+  skip_cleanup: true
+  on:
+    branch: master
