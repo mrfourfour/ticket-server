@@ -19,6 +19,9 @@ configurations {
     }
 }
 
+springBoot {
+    mainClassName = 'com.mrfofo.ticket.TicketApplication'
+}
 repositories {
     mavenCentral()
     jcenter()
