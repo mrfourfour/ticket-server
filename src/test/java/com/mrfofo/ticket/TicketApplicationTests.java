@@ -26,7 +26,7 @@ public class TicketApplicationTests {
     public void getTicketTest() {
         Ticket ticket = Ticket.builder()
                 .id("Ticket-1")
-                .product(Product.builder().id("Product-1").name("요트한직?").build())
+                .productId("Product-1")
                 .status("미사용")
                 .build();
 
