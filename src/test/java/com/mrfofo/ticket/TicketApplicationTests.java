@@ -45,7 +45,7 @@ public class TicketApplicationTests {
                 .date("2019-01-13")
                 .qrData("sdfsdf")
                 .amount(5)
-                .totalPrice(27000)
+                .totalPrice(27000L)
                 .build();
 
         webTestClient.get().uri("/api/ticket/1")

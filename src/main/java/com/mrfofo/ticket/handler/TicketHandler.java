@@ -14,9 +14,9 @@ import static org.springframework.web.reactive.function.BodyInserters.fromObject
 public class TicketHandler {
     public Flux<Ticket> ticketList() {
         return Flux.just(
-                Ticket.builder().id("Ticket-1").productId("Product-1").status(Ticket.TicketStatus.NOT_USED.getValue()).amount(1).totalPrice(30000).date("2018-11-27").qrData("soohyeon").build(),
-                Ticket.builder().id("Ticket-2").productId("Product-9").status(Ticket.TicketStatus.NOT_USED.getValue()).amount(5).totalPrice(27000).date("2019-01-13").qrData("sdfsdf").build(),
-                Ticket.builder().id("Ticket-3").productId("Product-3").status(Ticket.TicketStatus.NOT_USED.getValue()).amount(2).totalPrice(120000).date("2018-12-25").qrData("baem").build()
+                Ticket.builder().id("Ticket-1").productId("Product-1").status(Ticket.TicketStatus.NOT_USED.getValue()).amount(1).totalPrice(30000L).date("2018-11-27").qrData("soohyeon").build(),
+                Ticket.builder().id("Ticket-2").productId("Product-9").status(Ticket.TicketStatus.NOT_USED.getValue()).amount(5).totalPrice(27000L).date("2019-01-13").qrData("sdfsdf").build(),
+                Ticket.builder().id("Ticket-3").productId("Product-3").status(Ticket.TicketStatus.NOT_USED.getValue()).amount(2).totalPrice(120000L).date("2018-12-25").qrData("baem").build()
         );
     }
 
