@@ -16,7 +16,7 @@ public class TicketMapper {
                 .status(map.get("status").s())
                 .date(map.get("date").s())
                 .totalPrice(Long.parseLong(map.get("total_price").n()))
-                .qrData(map.get("qrData").s())
+                .qrData(map.get("qr_data").s())
                 .build();
     }
 
@@ -27,9 +27,9 @@ public class TicketMapper {
                 "product_id", AttributeValue.builder().s(ticket.getProductId()).build(),
                 "status", AttributeValue.builder().s(ticket.getStatus()).build(),
                 "amount", AttributeValue.builder().n(String.valueOf(ticket.getAmount())).build(),
-                "totalPrice", AttributeValue.builder().n(String.valueOf(ticket.getTotalPrice())).build(),
+                "total_price", AttributeValue.builder().n(String.valueOf(ticket.getTotalPrice())).build(),
                 "date", AttributeValue.builder().s(ticket.getDate()).build(),
-                "qrData", AttributeValue.builder().s(ticket.getQrData()).build()
+                "qr_data", AttributeValue.builder().s(ticket.getQrData()).build()
         );
     }
 }

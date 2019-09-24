@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mrfofo.ticket.model.Ticket;
 import com.mrfofo.ticket.objectmapper.TicketMapper;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -26,21 +28,21 @@ import static org.junit.Assert.assertThat;
 @AutoConfigureWebTestClient
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TicketcrudTests {
-
     @Autowired
     TicketMapper ticketMapper;
-
     @Autowired
     DynamoDbAsyncClient client;
+
     @Test
-    public void createTicketTest() {
+    @Ignore
+    public void createAndGetTicketTest() {
         Ticket ticket = Ticket.builder()
                 .id(UUID.randomUUID().toString())
                 .productId("Product-1")
                 .totalPrice(30000L)
                 .amount(3)
                 .qrData("guegue")
-                .date(new Date().toString())
+                .date(LocalDateTime.now().toString())
                 .status(Ticket.TicketStatus.NOT_USED.getValue())
                 .build();
         PutItemRequest request = PutItemRequest.builder()
@@ -50,26 +52,25 @@ public class TicketcrudTests {
 
         CompletableFuture<PutItemResponse> future = client.putItem(request);
         future.whenComplete((res, err) -> {
-            if(res == null)
+            if (res == null)
                 err.printStackTrace();
-        }).thenAccept(res -> {
+        }).thenAcceptAsync(res -> {
             GetItemRequest getItemRequest = GetItemRequest.builder()
                     .tableName("ticket")
                     .key(
-                        Map.of(
-                        "PK", AttributeValue.builder().s("Ticket").build(),
-                        "SK", AttributeValue.builder().s(ticket.getId()).build()
-                        )
+                            Map.of(
+                                    "PK", AttributeValue.builder().s("Ticket").build(),
+                                    "SK", AttributeValue.builder().s(ticket.getId()).build()
+                            )
                     )
                     .build();
-
             CompletableFuture<GetItemResponse> item = client.getItem(getItemRequest);
             item.whenComplete((resp, err) -> {
-                    if(resp == null)
-                        err.printStackTrace();
-                }).thenAccept(resp -> {
-                    assertThat(ticketMapper.toTicket(resp.item()), is(ticket));
-                });
+                if (resp == null)
+                    err.printStackTrace();
+            }).thenAcceptAsync(resp -> {
+                assertThat(ticketMapper.toTicket(resp.item()), is(ticket));
+            });
 
             item.join();
         });

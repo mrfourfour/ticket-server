@@ -15,8 +15,6 @@ public class DynamoConfig {
     private String AWS_ACCESS_KEY;
     @Value("${aws.secret.key}")
     private String AWS_SECRET_KEY;
-    @Value("${dynamodb.endpoint}")
-    private String dynamoDbEndpoint;
     @Bean
     public DynamoDbAsyncClient dynamoDBAsyncClient() {
         return DynamoDbAsyncClient.builder()
@@ -24,7 +22,6 @@ public class DynamoConfig {
                 .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(
                         AWS_ACCESS_KEY, AWS_SECRET_KEY
                 )))
-                .endpointOverride(URI.create(dynamoDbEndpoint))
                 .build();
     }
 }
