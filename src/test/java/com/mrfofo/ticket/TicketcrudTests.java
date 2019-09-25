@@ -43,6 +43,7 @@ public class TicketcrudTests {
         Ticket ticket = Ticket.builder()
                 .id(UUID.randomUUID().toString())
                 .productId("Product-1")
+                .userId("왕밤빵")
                 .totalPrice(30000L)
                 .amount(3)
                 .qrData("guegue")
@@ -82,7 +83,7 @@ public class TicketcrudTests {
     }
 
     @Test
-    @Ignore
+//    @Ignore
     public void createAndGetProduct() {
         Product product = Product.builder()
                 .id(UUID.randomUUID().toString())
@@ -95,6 +96,7 @@ public class TicketcrudTests {
                 .area(Product.ProductArea.JEJU.getValue())
                 .price(30000L)
                 .option("dummy")
+                .date(LocalDateTime.now().toString())
                 .build();
 
         PutItemRequest putItemRequest = PutItemRequest.builder()

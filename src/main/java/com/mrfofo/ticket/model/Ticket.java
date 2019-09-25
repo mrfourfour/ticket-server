@@ -15,6 +15,7 @@ public class Ticket {
     private Integer amount;
     private Long totalPrice;
     private String productId;
+    private String userId;
     private String date;
     private String qrData;
 

@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Product {
     private String id;
+    private String date;
     private String name;
     private String sellerId;
     private String image;

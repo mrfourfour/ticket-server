@@ -4,6 +4,7 @@ import com.mrfofo.ticket.model.Product;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Component
@@ -20,6 +21,7 @@ public class ProductMapper implements DynamoDbMapper<Product>{
                 .area(map.get("area").s())
                 .price(Long.parseLong(map.get("price").n()))
                 .option(map.get("option").s())
+                .date(map.get("date").s())
                 .build();
     }
 
@@ -35,7 +37,8 @@ public class ProductMapper implements DynamoDbMapper<Product>{
                 Map.entry("info", AttributeValue.builder().s(product.getInfo()).build()),
                 Map.entry("area", AttributeValue.builder().s(product.getArea()).build()),
                 Map.entry("price", AttributeValue.builder().n(String.valueOf(product.getPrice())).build()),
-                Map.entry("option", AttributeValue.builder().s(product.getOption()).build())
+                Map.entry("option", AttributeValue.builder().s(product.getOption()).build()),
+                Map.entry("date", AttributeValue.builder().s(product.getDate()).build())
         );
     }
 }
