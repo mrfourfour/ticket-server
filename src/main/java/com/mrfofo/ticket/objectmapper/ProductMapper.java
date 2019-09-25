@@ -13,7 +13,7 @@ public class ProductMapper {
                 .id(map.get("SK").s())
                 .name(map.get("name").s())
                 .sellerId(Long.parseLong(map.get("seller_id").n()))
-                .image(map.get("image"))
+                .image(map.get("image").s())
                 .build();
     }
 }
