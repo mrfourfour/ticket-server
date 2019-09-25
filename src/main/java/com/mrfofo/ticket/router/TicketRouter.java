@@ -2,6 +2,7 @@ package com.mrfofo.ticket.router;
 
 import com.mrfofo.ticket.handler.ErrorHandler;
 import com.mrfofo.ticket.handler.HealthHandler;
+import com.mrfofo.ticket.handler.ProductHandler;
 import com.mrfofo.ticket.handler.TicketHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +25,7 @@ public class TicketRouter {
     private final TicketHandler ticketHandler;
     private final HealthHandler healthHandler;
     private final ErrorHandler errorHandler;
+    private final ProductHandler productHandler;
 
     @Bean
     public RouterFunction<?> ticketRoute() {
@@ -34,7 +36,8 @@ public class TicketRouter {
                 .andNest(path("/api/ticket"),
                         route(GET("/"), ticketHandler::findAll)
                         .andRoute(GET("/{id}"), ticketHandler::findById))
-
+                .andNest(path("/api/product"),
+                        route(GET("/{category}"), productHandler::findByCategory))
                 .andOther(route(all(), errorHandler::notFound));
     }
 }

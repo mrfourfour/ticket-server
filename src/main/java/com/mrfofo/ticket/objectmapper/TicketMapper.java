@@ -7,13 +7,14 @@ import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import java.util.Map;
 
 @Component
-public class TicketMapper {
-    public Ticket toTicket(Map<String, AttributeValue> map) {
+public class TicketMapper implements DynamoDbMapper<Ticket> {
+    public Ticket toObj(Map<String, AttributeValue> map) {
         return Ticket.builder()
                 .id(map.get("SK").s())
                 .productId(map.get("product_id").s())
+                .userId(map.get("user_id").s())
                 .amount(Integer.parseInt(map.get("amount").n()))
-                .status(map.get("status").s())
+                .status(Enum.valueOf(Ticket.TicketStatus.class, map.get("status").s()))
                 .date(map.get("date").s())
                 .totalPrice(Long.parseLong(map.get("total_price").n()))
                 .qrData(map.get("qr_data").s())
@@ -25,7 +26,8 @@ public class TicketMapper {
                 "PK", AttributeValue.builder().s("Ticket").build(),
                 "SK", AttributeValue.builder().s(ticket.getId()).build(),
                 "product_id", AttributeValue.builder().s(ticket.getProductId()).build(),
-                "status", AttributeValue.builder().s(ticket.getStatus()).build(),
+                "user_id", AttributeValue.builder().s(ticket.getUserId()).build(),
+                "status", AttributeValue.builder().s(ticket.getStatus().getKey()).build(),
                 "amount", AttributeValue.builder().n(String.valueOf(ticket.getAmount())).build(),
                 "total_price", AttributeValue.builder().n(String.valueOf(ticket.getTotalPrice())).build(),
                 "date", AttributeValue.builder().s(ticket.getDate()).build(),

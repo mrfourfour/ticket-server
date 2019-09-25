@@ -27,17 +27,21 @@ public class TicketRepository implements DynamoDbRepository<Ticket, String> {
         CompletableFuture<ScanResponse> future = client.scan(ScanRequest.builder()
                 .tableName("ticket")
                 .scanFilter(Map.of(
-                        "date",
+                        "PK",
                         Condition.builder()
-                                .comparisonOperator(ComparisonOperator.LT)
-                                .attributeValueList(AttributeValue.builder().s(LocalDateTime.now().toString()).build())
-                                .build()
+                                .comparisonOperator(ComparisonOperator.EQ)
+                                .attributeValueList(AttributeValue.builder().s("Ticket").build()).build()
+//                        "date",
+//                        Condition.builder()
+//                                .comparisonOperator(ComparisonOperator.LT)
+//                                .attributeValueList(AttributeValue.builder().s(LocalDateTime.now().toString()).build())
+//                                .build()
                 ))
                 .build());
         CompletableFuture<List<Ticket>> ticketListFuture = future
                 .thenApplyAsync(ScanResponse::items)
                 .thenApplyAsync(list -> list.parallelStream()
-                    .map(ticketMapper::toTicket)
+                    .map(ticketMapper::toObj)
                     .collect(Collectors.toList())
                 );
         return Mono.fromFuture(ticketListFuture).flatMapMany(Flux::fromIterable);
@@ -56,7 +60,7 @@ public class TicketRepository implements DynamoDbRepository<Ticket, String> {
         return Mono.fromFuture(client
                 .getItem(getItemRequest)
                 .thenApplyAsync(GetItemResponse::item)
-                .thenApplyAsync(ticketMapper::toTicket));
+                .thenApplyAsync(ticketMapper::toObj));
     }
 
     @Override
