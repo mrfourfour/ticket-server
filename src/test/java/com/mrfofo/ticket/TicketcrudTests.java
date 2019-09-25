@@ -2,7 +2,9 @@ package com.mrfofo.ticket;
 
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mrfofo.ticket.model.Product;
 import com.mrfofo.ticket.model.Ticket;
+import com.mrfofo.ticket.objectmapper.ProductMapper;
 import com.mrfofo.ticket.objectmapper.TicketMapper;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -30,6 +32,8 @@ import static org.junit.Assert.assertThat;
 public class TicketcrudTests {
     @Autowired
     TicketMapper ticketMapper;
+    @Autowired
+    ProductMapper productMapper;
     @Autowired
     DynamoDbAsyncClient client;
 
@@ -69,11 +73,59 @@ public class TicketcrudTests {
                 if (resp == null)
                     err.printStackTrace();
             }).thenAcceptAsync(resp -> {
-                assertThat(ticketMapper.toTicket(resp.item()), is(ticket));
+                assertThat(ticketMapper.toObj(resp.item()), is(ticket));
             });
 
             item.join();
         });
         future.join();
+    }
+
+    @Test
+    @Ignore
+    public void createAndGetProduct() {
+        Product product = Product.builder()
+                .id(UUID.randomUUID().toString())
+                .name("할로우상품")
+                .sellerId("Seller-1")
+                .image("https://avatars0.githubusercontent.com/u/54847050?s=200&v=4")
+                .category("mainmain")
+                .subCategory("subsub")
+                .info("설명충은 사양아에요.")
+                .area(Product.ProductArea.JEJU.getValue())
+                .price(30000L)
+                .option("dummy")
+                .build();
+
+        PutItemRequest putItemRequest = PutItemRequest.builder()
+                .tableName("ticket")
+                .item(productMapper.toMap(product))
+                .build();
+
+        client.putItem(putItemRequest)
+        .whenComplete((res, err) -> {
+            if(res == null)
+                err.printStackTrace();
+        })
+        .thenAcceptAsync(res -> {
+            GetItemRequest getItemRequest = GetItemRequest.builder()
+                    .tableName("ticket")
+                    .key(Map.of(
+                            "PK", AttributeValue.builder().s("Product").build(),
+                            "SK", AttributeValue.builder().s(product.getId()).build()
+                    ))
+                    .build();
+
+            client.getItem(getItemRequest)
+                    .whenComplete((resp, err) -> {
+                        if(resp == null)
+                            err.printStackTrace();
+                    })
+                    .thenAcceptAsync(resp -> {
+                        assertThat(productMapper.toObj(resp.item()), is(product));
+                    }).join();
+        }).join();
+
+
     }
 }

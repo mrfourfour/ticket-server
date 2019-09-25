@@ -37,7 +37,7 @@ public class TicketRepository implements DynamoDbRepository<Ticket, String> {
         CompletableFuture<List<Ticket>> ticketListFuture = future
                 .thenApplyAsync(ScanResponse::items)
                 .thenApplyAsync(list -> list.parallelStream()
-                    .map(ticketMapper::toTicket)
+                    .map(ticketMapper::toObj)
                     .collect(Collectors.toList())
                 );
         return Mono.fromFuture(ticketListFuture).flatMapMany(Flux::fromIterable);
@@ -56,7 +56,7 @@ public class TicketRepository implements DynamoDbRepository<Ticket, String> {
         return Mono.fromFuture(client
                 .getItem(getItemRequest)
                 .thenApplyAsync(GetItemResponse::item)
-                .thenApplyAsync(ticketMapper::toTicket));
+                .thenApplyAsync(ticketMapper::toObj));
     }
 
     @Override

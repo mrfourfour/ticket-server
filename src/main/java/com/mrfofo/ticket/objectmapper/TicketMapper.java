@@ -7,8 +7,8 @@ import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import java.util.Map;
 
 @Component
-public class TicketMapper {
-    public Ticket toTicket(Map<String, AttributeValue> map) {
+public class TicketMapper implements DynamoDbMapper<Ticket> {
+    public Ticket toObj(Map<String, AttributeValue> map) {
         return Ticket.builder()
                 .id(map.get("SK").s())
                 .productId(map.get("product_id").s())
