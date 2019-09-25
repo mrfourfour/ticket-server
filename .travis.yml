@@ -24,6 +24,7 @@ deploy:
   region: "ap-northeast-2"
   app: "ticket"
   env: "Ticket-prod"
+  bucket_name: "ticket-mrfourfour-bucket"
   only_create_app_version: "true"
   on:
     branch: master
