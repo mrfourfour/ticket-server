@@ -12,9 +12,10 @@ import lombok.NoArgsConstructor;
 public class Product {
     private String id;
     private String name;
-    private Seller seller;
+    private Long sellerId;
     private String image;
     private String category;
+    private String subCategory;
     private String description;
     private String region;
     private String price;
