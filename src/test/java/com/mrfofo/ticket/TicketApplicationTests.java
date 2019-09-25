@@ -41,7 +41,7 @@ public class TicketApplicationTests {
         Ticket ticket = Ticket.builder()
                 .id("Ticket-2")
                 .productId("Product-9")
-                .status(Ticket.TicketStatus.NOT_USED.getValue())
+                .status(Ticket.TicketStatus.NOT_USED)
                 .date("2019-01-13")
                 .qrData("sdfsdf")
                 .amount(5)

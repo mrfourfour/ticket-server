@@ -11,10 +11,11 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Ticket {
     private String id;
-    private String status;
+    private TicketStatus status;
     private Integer amount;
     private Long totalPrice;
     private String productId;
+    private String userId;
     private String date;
     private String qrData;
 
@@ -31,9 +32,6 @@ public class Ticket {
 
         public String getKey() {
             return name();
-        }
-        public String getValue() {
-            return value;
         }
     }
 }
