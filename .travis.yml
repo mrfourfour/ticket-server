@@ -1,25 +1,29 @@
 language: java
-
 services:
-  - docker
-
+- docker
 jdk:
-  - openjdk12
-
+- openjdk12
 branches:
   only:
   - master
   - development
-
 cache:
   directories:
   - "$HOME/.m2/repository"
   - "$HOME/.gradle"
-
 script: "./gradlew clean build"
+
+before_deploy: bash docker_push
+
 deploy:
-  provider: script
-  script: bash docker_push
-  skip_cleanup: true
+  provider: elasticbeanstalk
+  access_key_id:
+    secure: FwIaH2KrOsKkkXebgmNXk+sh1dQ9N5ThjXrn9sxhBssOWTfm+z3HQjYuCp2PPh2xIBRqToc1rqm+ttezRDYtdBfZ4WXQFhWT7+MY4+Qir9FglAusR01uo3sXhnIuna4DVmuL1hGX6r7f/yDV+PNPCjV57lYevxopOKCOkzL1bthhoKtFGqQ5m9GSfZn26YdZvHcEGi6kV8f190Uy4T59C/oo4l4BDrutO3Y7kfiAzP6jmhxg4mBp6AsCn12Awx3nAI8NRJmxBnHJH3Fv5Dw7XOJ/JOjrNc17L9kpm6bAQmsjqS+DoL4Mfk1fmnQEb6DO8y3m8KPMaBnu2U2c7zMrBS08VBtgYct7r9yQEC7N7SRdexP2wjlWlYyXUIgyvGCFGA9AEEwotPbL98cKGPhBH/YQJ8CDuPYW+zI/m24DfnXaqIQLUrk2Z1sAU6WN9KdpRi4D9JvR+V6qkIEHbs304X4wLAfIOXtwLL3hhfUVKgysVbIV7ype6c6KZsoLkDbSYJVhITenWFZZ1XNCZS8pOm9thZSteG47Vvczwv1LIYye1N++gI0oobvZ1V3+Lrz8zBVN6taH3hHjhqUurMGqPyQ/o3kGNqEenufE7IvjAPhRX+RDoTuNYfwp9Y34LzBx7Tt2rbfaCVIJbnlLdDYvr6EFtn5TDTyu/aCblicIZWA=
+  secret_access_key:
+    secure: Zs8WlLeUtUTLflCPjBGoZQP94yEKlWCVn5H36sAQBs6PkJX5XYo2XxaqSSQcS/r0UVvsuTiX9sVLsaWjiINKY0xp502IwrKMZ3DM+DT3SFAT2ylhvX3PL0qaxfOWj3Y2DmwEeQVjffsjBOQaFQMduC7t7LEMtVntPw/2ZNnXnkxW4E+7VVnpibDewZKKe2wQHT/eYlzmkMzOcqgafd9imFfnPwwpof6mCJK145VPk70zo3D6AqNLN9vGGwbQt61X8ZwTAVpCQA5s9ux24t+8YD0958QbPEQSjYsEPY4yUE53OypGF+J806BGUZIbM3UkKT1NbNi8lNqLvwPP0SVajJaqASfEjpt3HTgX8UOOKzw6ssWvADD885hcQoKyH2LFemEYcublGnIx1EV/tPbOXRlhYwlzz2OocDZKxnNhyQyA9toPxFZJP/ZDPCtqxCCNALWL799mrk6HqEspLc0B3LQ3NQ2T4QwHyuMFUDzEnPrv7xyh4dxZWGqKnEslDPgjDvCWE9eKZCMmPzzZI6AOcqN9VVeTnl4+5Dc4T03Inc0K3h9eoVpMRjBKNoftY+jQp31iq/Bj94BNZ+Eciz1adHIBO5JICFz6KVGtNjOL+Na13jkzW8SxzOejft4tQNrJin9FTAjgB1TSG4P70FeunQ8nmZ8bzf6SN5ZLLl1WdkY=
+  region: "ap-northeast-2"
+  app: "ticket"
+  env: "Ticket-prod"
+  only_create_app_version: "true"
   on:
     branch: master
