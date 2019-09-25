@@ -14,7 +14,7 @@ public class TicketMapper implements DynamoDbMapper<Ticket> {
                 .productId(map.get("product_id").s())
                 .userId(map.get("user_id").s())
                 .amount(Integer.parseInt(map.get("amount").n()))
-                .status(map.get("status").s())
+                .status(Enum.valueOf(Ticket.TicketStatus.class, map.get("status").s()))
                 .date(map.get("date").s())
                 .totalPrice(Long.parseLong(map.get("total_price").n()))
                 .qrData(map.get("qr_data").s())
@@ -27,7 +27,7 @@ public class TicketMapper implements DynamoDbMapper<Ticket> {
                 "SK", AttributeValue.builder().s(ticket.getId()).build(),
                 "product_id", AttributeValue.builder().s(ticket.getProductId()).build(),
                 "user_id", AttributeValue.builder().s(ticket.getUserId()).build(),
-                "status", AttributeValue.builder().s(ticket.getStatus()).build(),
+                "status", AttributeValue.builder().s(ticket.getStatus().getKey()).build(),
                 "amount", AttributeValue.builder().n(String.valueOf(ticket.getAmount())).build(),
                 "total_price", AttributeValue.builder().n(String.valueOf(ticket.getTotalPrice())).build(),
                 "date", AttributeValue.builder().s(ticket.getDate()).build(),

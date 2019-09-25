@@ -48,15 +48,14 @@ public class TicketcrudTests {
                 .amount(3)
                 .qrData("guegue")
                 .date(LocalDateTime.now().toString())
-                .status(Ticket.TicketStatus.NOT_USED.getValue())
+                .status(Ticket.TicketStatus.NOT_USED)
                 .build();
         PutItemRequest request = PutItemRequest.builder()
                 .tableName("ticket")
                 .item(ticketMapper.toMap(ticket))
                 .build();
 
-        CompletableFuture<PutItemResponse> future = client.putItem(request);
-        future.whenComplete((res, err) -> {
+        client.putItem(request).whenComplete((res, err) -> {
             if (res == null)
                 err.printStackTrace();
         }).thenAcceptAsync(res -> {
@@ -69,31 +68,27 @@ public class TicketcrudTests {
                             )
                     )
                     .build();
-            CompletableFuture<GetItemResponse> item = client.getItem(getItemRequest);
-            item.whenComplete((resp, err) -> {
-                if (resp == null)
-                    err.printStackTrace();
-            }).thenAcceptAsync(resp -> {
-                assertThat(ticketMapper.toObj(resp.item()), is(ticket));
-            });
-
-            item.join();
-        });
-        future.join();
+            client.getItem(getItemRequest)
+                    .whenComplete((resp, err) -> {
+                        if (resp == null)
+                            err.printStackTrace();
+                    })
+                    .thenAcceptAsync(resp -> assertThat(ticketMapper.toObj(resp.item()), is(ticket))).join();
+        }).join();
     }
 
     @Test
-//    @Ignore
+    @Ignore
     public void createAndGetProduct() {
         Product product = Product.builder()
                 .id(UUID.randomUUID().toString())
                 .name("할로우상품")
                 .sellerId("Seller-1")
                 .image("https://avatars0.githubusercontent.com/u/54847050?s=200&v=4")
-                .category("mainmain")
-                .subCategory("subsub")
+                .category(Product.ProductCategory.LEISURE)
+                .subCategory(Product.ProductSubCategory.GUE)
                 .info("설명충은 사양아에요.")
-                .area(Product.ProductArea.JEJU.getValue())
+                .area(Product.ProductArea.JEJU)
                 .price(30000L)
                 .option("dummy")
                 .date(LocalDateTime.now().toString())
@@ -123,9 +118,7 @@ public class TicketcrudTests {
                         if(resp == null)
                             err.printStackTrace();
                     })
-                    .thenAcceptAsync(resp -> {
-                        assertThat(productMapper.toObj(resp.item()), is(product));
-                    }).join();
+                    .thenAcceptAsync(resp -> assertThat(productMapper.toObj(resp.item()), is(product))).join();
         }).join();
 
 

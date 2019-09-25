@@ -27,11 +27,15 @@ public class TicketRepository implements DynamoDbRepository<Ticket, String> {
         CompletableFuture<ScanResponse> future = client.scan(ScanRequest.builder()
                 .tableName("ticket")
                 .scanFilter(Map.of(
-                        "date",
+                        "PK",
                         Condition.builder()
-                                .comparisonOperator(ComparisonOperator.LT)
-                                .attributeValueList(AttributeValue.builder().s(LocalDateTime.now().toString()).build())
-                                .build()
+                                .comparisonOperator(ComparisonOperator.EQ)
+                                .attributeValueList(AttributeValue.builder().s("Ticket").build()).build()
+//                        "date",
+//                        Condition.builder()
+//                                .comparisonOperator(ComparisonOperator.LT)
+//                                .attributeValueList(AttributeValue.builder().s(LocalDateTime.now().toString()).build())
+//                                .build()
                 ))
                 .build());
         CompletableFuture<List<Ticket>> ticketListFuture = future

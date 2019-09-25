@@ -17,10 +17,10 @@ public class Product {
     private String name;
     private String sellerId;
     private String image;
-    private String category;
-    private String subCategory;
+    private ProductCategory category;
+    private ProductSubCategory subCategory;
     private String info;
-    private String area;
+    private ProductArea area;
     private Long price;
     private String option;
 
@@ -32,6 +32,9 @@ public class Product {
         ProductCategory(String category) {
             this.value = category;
         }
+
+        public String getKey() { return name(); }
+        public String getValue() { return value; }
     }
 
     public enum ProductSubCategory {
