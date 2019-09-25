@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 public class Ticket {
     private String id;
     private String status;
-    private int amount;
-    private int totalPrice;
+    private Integer amount;
+    private Long totalPrice;
     private String productId;
     private String date;
     private String qrData;
