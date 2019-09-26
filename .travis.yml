@@ -26,4 +26,5 @@ deploy:
   env: "Ticket-prod"
   bucket_name: "ticket-mrfourfour-bucket"
   on:
-    repo: jj01108/ticket
+    repo: mrfourfour/ticket-server
+    branch: master
