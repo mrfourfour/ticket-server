@@ -120,7 +120,5 @@ public class TicketcrudTests {
                     })
                     .thenAcceptAsync(resp -> assertThat(productMapper.toObj(resp.item()), is(product))).join();
         }).join();
-
-
     }
 }
