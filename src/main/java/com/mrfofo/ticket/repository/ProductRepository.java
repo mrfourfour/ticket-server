@@ -1,7 +1,6 @@
 package com.mrfofo.ticket.repository;
 
 import com.mrfofo.ticket.model.Product;
-import com.mrfofo.ticket.model.Ticket;
 import com.mrfofo.ticket.objectmapper.DynamoDbMapper;
 import com.mrfofo.ticket.objectmapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +44,52 @@ public class ProductRepository implements DynamoDbRepository<Product, String> {
 
     @Override
     public Mono<Product> findById(String id) {
-        return null;
+        GetItemRequest getItemRequest = GetItemRequest.builder()
+                .tableName("ticket")
+                .key(Map.of(
+                        "PK", AttributeValue.builder().s("Product").build(),
+                        "SK", AttributeValue.builder().s(id).build()))
+                .build();
+        return Mono.fromFuture(client
+                .getItem(getItemRequest)
+                .thenApplyAsync(GetItemResponse::item)
+                .thenApplyAsync(productMapper::toObj));
+    }
+
+    public Flux<Product> findByCategory(String category) {
+        CompletableFuture<QueryResponse> future = client.query(QueryRequest.builder()
+                .tableName("ticket")
+                .indexName("sortByDate")
+                .keyConditionExpression("PK = :product")
+                .filterExpression("category = :category")
+                .expressionAttributeValues(Map.of(
+                        ":product", AttributeValue.builder().s("Product").build(),
+                        ":category", AttributeValue.builder().s(category).build()
+                ))
+                .build());
+
+        CompletableFuture<List<Product>> productListFuture = future
+                .thenApplyAsync(QueryResponse::items)
+                .thenApplyAsync(list -> list.parallelStream()
+                    .map(productMapper::toObj)
+                    .collect(Collectors.toList())
+                );
+        return Mono.fromFuture(productListFuture).flatMapMany(Flux::fromIterable);
+    }
+
+    public Mono<Product> findByCategoryAndId(String category, String id) {
+
+        GetItemRequest getItemRequest = GetItemRequest.builder()
+                .tableName("ticket")
+                .key(Map.of(
+                        "PK", AttributeValue.builder().s("Product").build(),
+                        "category", AttributeValue.builder().s(category).build(),
+                        "SK", AttributeValue.builder().s(id).build()))
+                .build();
+        return Mono.fromFuture(client
+                .getItem(getItemRequest)
+                .thenApplyAsync(GetItemResponse::item)
+                .thenApplyAsync(productMapper::toObj));
     }
 
     @Override
