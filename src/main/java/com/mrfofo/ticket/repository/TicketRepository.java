@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 
+import javax.management.Query;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -24,22 +25,16 @@ public class TicketRepository implements DynamoDbRepository<Ticket, String> {
 
     @Override
     public Flux<Ticket> findAll() {
-        CompletableFuture<ScanResponse> future = client.scan(ScanRequest.builder()
+        CompletableFuture<QueryResponse> future = client.query(QueryRequest.builder()
                 .tableName("ticket")
-                .scanFilter(Map.of(
-                        "PK",
-                        Condition.builder()
-                                .comparisonOperator(ComparisonOperator.EQ)
-                                .attributeValueList(AttributeValue.builder().s("Ticket").build()).build()
-//                        "date",
-//                        Condition.builder()
-//                                .comparisonOperator(ComparisonOperator.LT)
-//                                .attributeValueList(AttributeValue.builder().s(LocalDateTime.now().toString()).build())
-//                                .build()
-                ))
+                .indexName("sortByDate")
+                .keyConditionExpression("PK = :pk")
+                .expressionAttributeValues(Map.of(":pk", AttributeValue.builder().s("Ticket").build()))
+                .scanIndexForward(true)
                 .build());
+
         CompletableFuture<List<Ticket>> ticketListFuture = future
-                .thenApplyAsync(ScanResponse::items)
+                .thenApplyAsync(QueryResponse::items)
                 .thenApplyAsync(list -> list.parallelStream()
                     .map(ticketMapper::toObj)
                     .collect(Collectors.toList())

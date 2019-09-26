@@ -32,12 +32,12 @@ public class TicketRouter {
         return RouterFunctions
                 .nest(path("/"),
                         route(GET("/"), healthHandler::checkHealth))
-
                 .andNest(path("/api/ticket"),
                         route(GET("/"), ticketHandler::findAll)
                         .andRoute(GET("/{id}"), ticketHandler::findById))
                 .andNest(path("/api/product"),
-                        route(GET("/{category}"), productHandler::findByCategory))
+                        route(GET("/"), productHandler::findAll)
+                        .andRoute(GET("/{category}"), productHandler::findByCategory))
                 .andOther(route(all(), errorHandler::notFound));
     }
 }
