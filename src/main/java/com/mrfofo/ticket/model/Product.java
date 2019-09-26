@@ -37,6 +37,8 @@ public class Product {
         public String getValue() { return value; }
     }
 
+//    public String getCategory() { return this.category.getValue(); }
+
     public enum ProductSubCategory {
         GUE("뀨뀨"),
         MAX("맥스");

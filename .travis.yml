@@ -25,6 +25,5 @@ deploy:
   app: "ticket"
   env: "Ticket-prod"
   bucket_name: "ticket-mrfourfour-bucket"
-  zip_file: Dockerrun.aws.json
   on:
-    branch: master
+    branch: jj01108/ticket
