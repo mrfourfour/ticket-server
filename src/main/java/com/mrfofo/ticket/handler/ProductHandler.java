@@ -4,6 +4,7 @@ import com.mrfofo.ticket.model.Product;
 import com.mrfofo.ticket.repository.DynamoDbRepository;
 import com.mrfofo.ticket.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -17,6 +18,7 @@ import static org.springframework.web.reactive.function.BodyInserters.fromObject
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class ProductHandler {
 
     private final ProductRepository repository;
@@ -30,11 +32,10 @@ public class ProductHandler {
         return repository.findAll().collectList().flatMap(products -> ServerResponse.ok().body(fromObject(Map.of("data", products))));
     }
 
-    public Mono<ServerResponse> findByCategoryAndId(ServerRequest serverRequest) {
-        String category = serverRequest.pathVariable("category");
+    public Mono<ServerResponse> findById(ServerRequest serverRequest) {
         String id = serverRequest.pathVariable("id");
-
-        return repository.findByCategoryAndId(category, id).flatMap(product ->
-                ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(fromObject(product)));
+        log.info(id);
+        return repository.findById(id).flatMap(product ->
+                ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(fromObject(Map.of("data", product))));
     }
 }
