@@ -1,17 +1,13 @@
 package com.mrfofo.ticket;
 
-import com.mrfofo.ticket.model.Product;
 import com.mrfofo.ticket.model.Ticket;
-import io.netty.util.concurrent.CompleteFuture;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.DisabledIf;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
@@ -19,10 +15,6 @@ import software.amazon.awssdk.services.dynamodb.model.*;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringRunner.class)
 @AutoConfigureWebTestClient

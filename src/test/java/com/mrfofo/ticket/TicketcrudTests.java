@@ -1,7 +1,5 @@
 package com.mrfofo.ticket;
 
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mrfofo.ticket.model.Product;
 import com.mrfofo.ticket.model.Ticket;
 import com.mrfofo.ticket.objectmapper.ProductMapper;
@@ -17,12 +15,9 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
-import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 

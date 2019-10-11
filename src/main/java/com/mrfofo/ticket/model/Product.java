@@ -5,9 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-import java.util.List;
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -33,33 +30,27 @@ public class Product {
         THEATER("연극");
 
         private String value;
-        private ProductSubCategory productSubCategory;
-        ProductCategory(String category, String productSubCategory) {
+        ProductCategory(String category) {
             this.value = category;
-            setProductSubCategory(productSubCategory);
-        }
-
-        private void setProductSubCategory(String productSubCategory) {
-
         }
 
         public String getKey() { return name(); }
         public String getValue() { return value; }
     }
-    public interface ProductSubCategory {
-
-    }
-//    public String getCategory() { return this.category.getValue(); }
-    public enum TourSubCategory implements ProductSubCategory {
+    public enum ProductSubCategory {
         GUE("뀨뀨"),
         MAX("맥스");
         private String value;
-        TourSubCategory(String subCategory) {
+        ProductSubCategory(String subCategory) {
             this.value = subCategory;
         }
         public String getKey() { return name(); }
         public String getValue() { return value; }
     }
+//    public String getCategory() { return this.category.getValue(); }
+    // public enum TourSubCategory implements ProductSubCategory {
+        
+    // }
     public enum ProductArea {
         SEOUL("서울"),
         INCHEON("인천"),

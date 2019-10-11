@@ -2,7 +2,6 @@ package com.mrfofo.ticket.repository;
 
 import com.mrfofo.ticket.model.Product;
 import com.mrfofo.ticket.objectmapper.DynamoDbMapper;
-import com.mrfofo.ticket.objectmapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
