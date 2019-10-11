@@ -40,15 +40,14 @@ public class ProductHandler {
                 ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(fromObject(Map.of("data", product))));
     }
 
-    public Mono<ServerResponse> save(ServerRequest serverRequest) {
-        return serverRequest.bodyToMono(Product.class)
-        .doOnNext(product -> {
-            log.info(product.toString());
-            //repository.save(product);
-        })
-        .doOnError(NotEqualException.class, errorHandler::notEqual)
-        .flatMap(product -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(fromObject(product)))
-        
-        .switchIfEmpty(ServerResponse.notFound().build());
-    }
+    // public Mono<ServerResponse> save(ServerRequest serverRequest) {
+    //     return serverRequest.bodyToMono(Product.class)
+    //     .doOnNext(product -> {
+    //         log.info(product.toString());
+    //         repository.save(product);
+    //     })
+    //     .doOnError(NotEqualException.class, errorHandler::notEqual)
+    //     .flatMap(product -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(fromObject(product)))
+    //     .switchIfEmpty(ServerResponse.notFound().build());
+    // }
 }

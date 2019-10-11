@@ -28,10 +28,10 @@ public class TicketRouter {
                         route(GET("/"), healthHandler::checkHealth))
                 .andNest(path("/api/ticket"),
                         route(GET("/"), ticketHandler::findAll)
+                        .andRoute(POST("/"), ticketHandler::save)
                         .andRoute(GET("/{id}"), ticketHandler::findById))
                 .andNest(path("/api/product"),
                         route(GET("/"), productHandler::findAll)
-                        .andRoute(POST("/"), productHandler::save)
                         .andRoute(GET("/category/{category}"), productHandler::findByCategory)
                         .andRoute(GET("/{id}"), productHandler::findById))
                 .andOther(route(all(), errorHandler::notFound));

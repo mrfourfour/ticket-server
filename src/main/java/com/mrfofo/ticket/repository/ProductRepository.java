@@ -93,11 +93,11 @@ public class ProductRepository implements DynamoDbRepository<Product, String> {
     }
 
     @Override
-    public Mono<Product> save(Product product) throws NotEqualException {
-		// TODO 카테고리 다르면 NotEqualException 처리하기!
-		if(!product.getCategory().equals(product.getSubCategory().getParentProductCategory())) {
-			throw new NotEqualException();
-		}
+    public Mono<Product> save(Product product) {
+		// // TODO 카테고리 다르면 NotEqualException 처리하기!
+		// if(!product.getCategory().equals(product.getSubCategory().getParentProductCategory())) {
+		// 	throw new NotEqualException();
+		// }
 
         PutItemRequest putItemRequest = PutItemRequest.builder()
 			.tableName("ticket")
