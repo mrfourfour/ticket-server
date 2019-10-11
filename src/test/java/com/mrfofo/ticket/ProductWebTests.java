@@ -1,5 +1,6 @@
 package com.mrfofo.ticket;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class ProductWebTests {
     public WebTestClient webTestClient;
 
     @Test
+    @Ignore
     public void createProductTest() {
         Product product = Product.builder()
                 .id(UUID.randomUUID().toString())
