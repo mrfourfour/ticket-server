@@ -81,7 +81,7 @@ public class TicketcrudTests {
                 .sellerId("Seller-1")
                 .image("https://avatars0.githubusercontent.com/u/54847050?s=200&v=4")
                 .category(Product.ProductCategory.LEISURE)
-                .subCategory(Product.ProductSubCategory.GUE)
+                .subCategory(Product.ProductSubCategory.LAND)
                 .info("설명충은 사양아에요.")
                 .area(Product.ProductArea.JEJU)
                 .price(30000L)

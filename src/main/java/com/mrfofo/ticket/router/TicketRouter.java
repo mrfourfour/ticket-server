@@ -31,6 +31,7 @@ public class TicketRouter {
                         .andRoute(GET("/{id}"), ticketHandler::findById))
                 .andNest(path("/api/product"),
                         route(GET("/"), productHandler::findAll)
+                        .andRoute(POST("/"), productHandler::save)
                         .andRoute(GET("/category/{category}"), productHandler::findByCategory)
                         .andRoute(GET("/{id}"), productHandler::findById))
                 .andOther(route(all(), errorHandler::notFound));

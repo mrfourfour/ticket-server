@@ -93,7 +93,17 @@ public class ProductRepository implements DynamoDbRepository<Product, String> {
 
     @Override
     public Mono<Product> save(Product product) {
-        return null;
+        PutItemRequest putItemRequest = PutItemRequest.builder()
+			.tableName("ticket")
+			.item(productMapper.toMap(product))
+			.build();
+
+        
+		return Mono.fromFuture(client
+			.putItem(putItemRequest)
+			.thenApplyAsync(PutItemResponse::attributes)
+			.thenApplyAsync(productMapper::toObj));
+		
     }
 
     @Override
