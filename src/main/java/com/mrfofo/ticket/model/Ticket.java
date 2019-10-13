@@ -33,5 +33,9 @@ public class Ticket {
         public String getKey() {
             return name();
         }
+
+        public String getValue() {
+            return value;
+        }
     }
 }
