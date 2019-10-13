@@ -1,5 +1,6 @@
 package com.mrfofo.ticket.router;
 
+import com.mrfofo.ticket.handler.CategoryHandler;
 import com.mrfofo.ticket.handler.ErrorHandler;
 import com.mrfofo.ticket.handler.HealthHandler;
 import com.mrfofo.ticket.handler.ProductHandler;
@@ -20,6 +21,7 @@ public class TicketRouter {
     private final HealthHandler healthHandler;
     private final ErrorHandler errorHandler;
     private final ProductHandler productHandler;
+    private final CategoryHandler categoryHandler;
 
     @Bean
     public RouterFunction<?> ticketRoute() {
@@ -34,6 +36,8 @@ public class TicketRouter {
                         route(GET("/"), productHandler::findAll)
                         .andRoute(GET("/category/{category}"), productHandler::findByCategory)
                         .andRoute(GET("/{id}"), productHandler::findById))
+                .andNest(path("/api/category"),
+                        route(GET("/"), categoryHandler::findCategory))
                 .andOther(route(all(), errorHandler::notFound));
     }
 }
