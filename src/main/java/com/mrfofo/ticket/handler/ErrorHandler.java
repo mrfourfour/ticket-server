@@ -12,4 +12,8 @@ public class ErrorHandler {
     public Mono<ServerResponse> notFound(ServerRequest serverRequest) {
         return ServerResponse.ok().body(fromObject("잘못 치셨는디유"));
     }
+
+    public Mono<ServerResponse> notEqual(final Throwable error) {
+        return ServerResponse.badRequest().body(fromObject(error.getMessage()));
+    }
 }

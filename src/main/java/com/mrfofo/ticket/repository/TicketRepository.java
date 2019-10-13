@@ -58,7 +58,14 @@ public class TicketRepository implements DynamoDbRepository<Ticket, String> {
 
     @Override
     public Mono<Ticket> save(Ticket ticket) {
-        return null;
+        PutItemRequest putItemRequest = PutItemRequest.builder()
+            .tableName("ticket")
+            .item(ticketMapper.toMap(ticket))
+            .build();
+
+        return Mono.fromFuture(client.putItem(putItemRequest)
+            .thenApplyAsync(PutItemResponse::attributes)
+            .thenApplyAsync(ticketMapper::toObj));
     }
 
     @Override

@@ -1,7 +1,5 @@
-package com.mrfofo.ticket.handler;
 
-import com.mrfofo.ticket.exception.NotEqualException;
-import com.mrfofo.ticket.model.Product;
+
 import com.mrfofo.ticket.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +20,6 @@ import static org.springframework.web.reactive.function.BodyInserters.fromObject
 public class ProductHandler {
 
     private final ProductRepository repository;
-    private final ErrorHandler errorHandler;
 
     public Mono<ServerResponse> findByCategory(ServerRequest serverRequest) {
         String category = serverRequest.pathVariable("category").toUpperCase();
@@ -39,15 +36,4 @@ public class ProductHandler {
         return repository.findById(id).flatMap(product ->
                 ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(fromObject(Map.of("data", product))));
     }
-
-    // public Mono<ServerResponse> save(ServerRequest serverRequest) {
-    //     return serverRequest.bodyToMono(Product.class)
-    //     .doOnNext(product -> {
-    //         log.info(product.toString());
-    //         repository.save(product);
-    //     })
-    //     .doOnError(NotEqualException.class, errorHandler::notEqual)
-    //     .flatMap(product -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(fromObject(product)))
-    //     .switchIfEmpty(ServerResponse.notFound().build());
-    // }
 }

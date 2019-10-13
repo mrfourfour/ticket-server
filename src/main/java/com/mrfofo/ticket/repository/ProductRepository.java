@@ -1,8 +1,8 @@
 package com.mrfofo.ticket.repository;
 
+import com.mrfofo.ticket.exception.NotEqualException;
 import com.mrfofo.ticket.model.Product;
 import com.mrfofo.ticket.objectmapper.DynamoDbMapper;
-import com.mrfofo.ticket.objectmapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
@@ -94,7 +94,21 @@ public class ProductRepository implements DynamoDbRepository<Product, String> {
 
     @Override
     public Mono<Product> save(Product product) {
-        return null;
+		// // TODO 카테고리 다르면 NotEqualException 처리하기!
+		// if(!product.getCategory().equals(product.getSubCategory().getParentProductCategory())) {
+		// 	throw new NotEqualException();
+		// }
+
+        PutItemRequest putItemRequest = PutItemRequest.builder()
+			.tableName("ticket")
+			.item(productMapper.toMap(product))
+			.build();
+
+        return Mono.fromFuture(client
+			.putItem(putItemRequest)
+			.thenApplyAsync(PutItemResponse::attributes)
+			.thenApplyAsync(productMapper::toObj));
+		
     }
 
     @Override

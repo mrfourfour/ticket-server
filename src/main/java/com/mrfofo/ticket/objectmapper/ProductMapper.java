@@ -4,7 +4,6 @@ import com.mrfofo.ticket.model.Product;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 @Component

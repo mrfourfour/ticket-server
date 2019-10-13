@@ -1,5 +1,7 @@
 package com.mrfofo.ticket.repository;
 
+import com.mrfofo.ticket.exception.NotEqualException;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
