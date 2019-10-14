@@ -13,7 +13,7 @@ cache:
   - "$HOME/.gradle"
 script: "./gradlew clean build"
 
-before_deploy: bash docker_push
+after_success: bash docker_push
 
 deploy:
   provider: elasticbeanstalk
@@ -25,6 +25,7 @@ deploy:
   app: "ticket"
   env: "Ticket-prod"
   bucket_name: "ticket-mrfourfour-bucket"
+  skip_clean_up: true;
   on:
     repo: mrfourfour/ticket-server
     branch: master
