@@ -29,7 +29,7 @@ deploy:
   env: "Ticket-prod"
   bucket_name: "ticket-mrfourfour-bucket"
   zip_file: eb.zip
-  skip_clean_up: true;
+  skip_cleanup: true;
   on:
     repo: mrfourfour/ticket-server
     branch: master
