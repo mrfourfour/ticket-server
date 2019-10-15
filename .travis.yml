@@ -15,6 +15,7 @@ script: "./gradlew clean build"
 
 after_success: bash docker_push
 before_deploy:
+  - echo pwd
   - zip eb.zip deploy/*
 
 deploy:
