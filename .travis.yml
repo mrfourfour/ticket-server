@@ -14,6 +14,8 @@ cache:
 script: "./gradlew clean build"
 
 after_success: bash docker_push
+before_deploy:
+  - zip eb.zip deploy/*
 
 deploy:
   provider: elasticbeanstalk
@@ -25,6 +27,7 @@ deploy:
   app: "ticket"
   env: "Ticket-prod"
   bucket_name: "ticket-mrfourfour-bucket"
+  zip_file: eb.zip
   skip_clean_up: true;
   on:
     repo: mrfourfour/ticket-server
