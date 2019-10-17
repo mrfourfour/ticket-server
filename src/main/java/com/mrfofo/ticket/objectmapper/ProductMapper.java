@@ -29,7 +29,8 @@ public class ProductMapper implements DynamoDbMapper<Product>{
                 .title(valueMap.get("title").s())
                 .description(valueMap.get("description").s())
                 .rate(Long.parseLong(valueMap.get("rate").n()))
-                .build()).collect(Collectors.toList()))
+                .build()
+        ).collect(Collectors.toSet()))
         .date(map.get("date").s())
         .build();
 
