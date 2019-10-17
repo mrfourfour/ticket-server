@@ -16,7 +16,8 @@ script: "./gradlew clean build"
 after_success: bash docker_push
 before_deploy:
   - echo $PWD
-  - zip eb.zip deploy/*
+  - cd deploy
+  - zip eb.zip .ebextensions Dockerrun.aws.json
 
 deploy:
   provider: elasticbeanstalk
