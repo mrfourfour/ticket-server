@@ -1,9 +1,13 @@
 package com.mrfofo.ticket.model;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @Builder
@@ -21,6 +25,18 @@ public class Product {
     private ProductArea area;
     private Long price;
     private String option;
+    private Double averageRate;
+    private List<Review> reviews;
+
+
+    @Data
+    @Builder
+    public static class Review {
+        private String userId;
+        private String title;
+        private String description;
+        private Long rate;
+    }
 
     public enum ProductCategory {
         LEISURE("레져"),
