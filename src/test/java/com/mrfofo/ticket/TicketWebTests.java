@@ -1,5 +1,6 @@
 package com.mrfofo.ticket;
 
+import com.mrfofo.ticket.model.Product;
 import com.mrfofo.ticket.model.Ticket;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class TicketWebTests {
     public WebTestClient webTestClient;
 
     @Test
-    @Ignore
+//    @Ignore
     public void createTicket() {
         Ticket ticket = Ticket.builder()
             .productId("Product-1")
@@ -36,6 +37,12 @@ public class TicketWebTests {
         .accept(MediaType.APPLICATION_JSON_UTF8)
         .exchange()
         .expectStatus().isOk();
+    }
+
+    @Test
+    @Ignore
+    public void addReview() {
+
     }
 
 }
