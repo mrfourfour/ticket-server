@@ -1,10 +1,6 @@
 package com.mrfofo.ticket.router;
 
-import com.mrfofo.ticket.handler.CategoryHandler;
-import com.mrfofo.ticket.handler.ErrorHandler;
-import com.mrfofo.ticket.handler.HealthHandler;
-import com.mrfofo.ticket.handler.ProductHandler;
-import com.mrfofo.ticket.handler.TicketHandler;
+import com.mrfofo.ticket.handler.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,22 +18,32 @@ public class TicketRouter {
     private final ErrorHandler errorHandler;
     private final ProductHandler productHandler;
     private final CategoryHandler categoryHandler;
+    private final AreaHandler areaHandler;
 
     @Bean
     public RouterFunction<?> ticketRoute() {
         return RouterFunctions
                 .nest(path("/"),
                         route(GET("/"), healthHandler::checkHealth))
+
                 .andNest(path("/api/ticket"),
                         route(GET("/"), ticketHandler::findAll)
                         .andRoute(POST("/"), ticketHandler::save)
                         .andRoute(GET("/{id}"), ticketHandler::findById))
+
                 .andNest(path("/api/product"),
                         route(GET("/"), productHandler::findAll)
-                        .andRoute(GET("/category/{category}"), productHandler::findByCategory)
-                        .andRoute(GET("/{id}"), productHandler::findById))
+                        .andRoute(GET("/area/{area}/category/{category}"), productHandler::findByAreaAndCategory)
+                        .andRoute(GET("/{id}"), productHandler::findById)
+                        .andRoute(POST("/{id}"), productHandler::saveReview))
+
                 .andNest(path("/api/category"),
                         route(GET("/"), categoryHandler::findCategory))
+
+                .andNest(path("/api/area"),
+                        route(GET("/"), areaHandler::findArea))
+
+
                 .andOther(route(all(), errorHandler::notFound));
     }
 }

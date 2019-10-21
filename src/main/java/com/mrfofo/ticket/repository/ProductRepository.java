@@ -56,14 +56,15 @@ public class ProductRepository implements DynamoDbRepository<Product, String> {
                 .thenApplyAsync(productMapper::toObj));
     }
 
-    public Flux<Product> findByCategory(String category) {
+    public Flux<Product> findByAreaAndCategory(String area, String category) {
         CompletableFuture<QueryResponse> future = client.query(QueryRequest.builder()
                 .tableName("ticket")
                 .indexName("sortByDate")
                 .keyConditionExpression("PK = :product")
-                .filterExpression("category = :category")
+                .filterExpression("area = :area and category = :category")
                 .expressionAttributeValues(Map.of(
                         ":product", AttributeValue.builder().s("Product").build(),
+                        ":area", AttributeValue.builder().s(area).build(),
                         ":category", AttributeValue.builder().s(category).build()
                 ))
                 .build());
@@ -94,10 +95,8 @@ public class ProductRepository implements DynamoDbRepository<Product, String> {
 
     @Override
     public Mono<Product> save(Product product) {
-		// // TODO 카테고리 다르면 NotEqualException 처리하기!
-		// if(!product.getCategory().equals(product.getSubCategory().getParentProductCategory())) {
-		// 	throw new NotEqualException();
-		// }
+        if(product.getSubCategory().getParentProductCategory() == product.getCategory())
+            return Mono.error(new NotEqualException());
 
         PutItemRequest putItemRequest = PutItemRequest.builder()
 			.tableName("ticket")

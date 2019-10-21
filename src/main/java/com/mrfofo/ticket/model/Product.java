@@ -1,9 +1,10 @@
 package com.mrfofo.ticket.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import lombok.*;
 
 @Data
 @Builder
@@ -21,6 +22,27 @@ public class Product {
     private ProductArea area;
     private Long price;
     private String option;
+    private Double averageRate;
+    @Builder.Default
+    private Set<Review> reviews = new HashSet<>();
+
+    @Getter
+    @EqualsAndHashCode(exclude={ "rate", "title", "description" })
+    @Builder
+    public static class Review {
+        private String userId;
+        private String title;
+        private String description;
+        private Long rate;
+
+//        @Override
+//        public boolean equals(Object o) {
+//            if(o instanceof Review) {
+//                return ((Review) o).userId.equals(this.userId);
+//            }
+//            return false;
+//        }
+    }
 
     public enum ProductCategory {
         LEISURE("레져"),
