@@ -22,14 +22,14 @@ public class TicketWebTests {
     public WebTestClient webTestClient;
 
     @Test
-//    @Ignore
+    @Ignore
     public void createTicket() {
         Ticket ticket = Ticket.builder()
             .productId("Product-1")
             .userId("왕밤빵")
             .totalPrice(30000L)
             .amount(3)
-            .qrData("guegue")
+//            .qrData("guegue")
             .build();
 
         webTestClient.post().uri("/api/ticket/")

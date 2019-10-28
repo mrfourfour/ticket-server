@@ -1,16 +1,19 @@
 package com.mrfofo.ticket.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class Product implements Serializable {
     private String id;
     private String date;
     private String name;
@@ -21,27 +24,35 @@ public class Product {
     private String info;
     private ProductArea area;
     private Long price;
-    private String option;
-    private Double averageRate;
+    @Builder.Default
+    private Double averageRate = 0.0;
+    private List<ProductOption> options;
     @Builder.Default
     private Set<Review> reviews = new HashSet<>();
 
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ProductOption {
+        private String id;
+//        private Product product;
+        private String description;
+        private String date;
+        private Long amount;
+    }
+
     @Getter
+    @Setter
     @EqualsAndHashCode(exclude={ "rate", "title", "description" })
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Review {
         private String userId;
         private String title;
         private String description;
         private Long rate;
-
-//        @Override
-//        public boolean equals(Object o) {
-//            if(o instanceof Review) {
-//                return ((Review) o).userId.equals(this.userId);
-//            }
-//            return false;
-//        }
     }
 
     public enum ProductCategory {
