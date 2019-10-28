@@ -29,7 +29,7 @@ public class TicketWebTests {
             .userId("왕밤빵")
             .totalPrice(30000L)
             .amount(3)
-            .qrData("guegue")
+//            .qrData("guegue")
             .build();
 
         webTestClient.post().uri("/api/ticket/")
