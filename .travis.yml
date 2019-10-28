@@ -13,8 +13,8 @@ cache:
   - "$HOME/.gradle"
 script: "./gradlew clean build"
 
-after_success: bash docker_push
 before_deploy:
+  - bash docker_push
   - echo $PWD
   - cd deploy
   - zip eb.zip .ebextensions Dockerrun.aws.json
