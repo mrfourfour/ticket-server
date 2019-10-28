@@ -54,12 +54,6 @@ public class ProductHandler {
                         : ServerResponse.badRequest().body(BodyInserters.fromObject(Map.of("data", false))));
     }
 
-    public Mono<ServerResponse> addOption(ServerRequest serverRequest) {
-        String id = serverRequest.pathVariable("id");
-
-        return null;
-    }
-
     // public Mono<ServerResponse> save(ServerRequest serverRequest) {
     //     return serverRequest.bodyToMono(Product.class)
     //     .doOnNext(product -> {
