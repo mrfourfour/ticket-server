@@ -35,7 +35,7 @@ public class TicketApplicationTests {
                 .productId("Product-9")
                 .status(Ticket.TicketStatus.NOT_USED)
                 .date("2019-01-13")
-                .qrData("sdfsdf")
+//                .qrData("sdfsdf")
                 .amount(5)
                 .totalPrice(27000L)
                 .build();

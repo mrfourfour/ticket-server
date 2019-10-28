@@ -22,14 +22,21 @@ public class ProductMapper implements DynamoDbMapper<Product>{
         .info(map.get("info").s())
         .area(Product.ProductArea.valueOf(map.get("area").s()))
         .price(Long.parseLong(map.get("price").n()))
-        .option(map.get("option").s())
+        .options(map.get("option").l().parallelStream().map(AttributeValue::m).map(optionMap ->
+                Product.ProductOption.builder()
+                        .id(optionMap.get("option_id").s())
+                        .date(optionMap.get("date").s())
+                        .description(optionMap.get("description").s())
+                        .amount(Long.parseLong(optionMap.get("amount").n()))
+                        .build()
+        ).collect(Collectors.toList()))
         .reviews(map.get("reviews").l().parallelStream().map(AttributeValue::m).map(valueMap -> 
-            Review.builder()
-                .userId(valueMap.get("user_id").s())
-                .title(valueMap.get("title").s())
-                .description(valueMap.get("description").s())
-                .rate(Long.parseLong(valueMap.get("rate").n()))
-                .build()
+                Review.builder()
+                        .userId(valueMap.get("user_id").s())
+                        .title(valueMap.get("title").s())
+                        .description(valueMap.get("description").s())
+                        .rate(Long.parseLong(valueMap.get("rate").n()))
+                        .build()
         ).collect(Collectors.toSet()))
         .date(map.get("date").s())
         .build();
@@ -51,15 +58,22 @@ public class ProductMapper implements DynamoDbMapper<Product>{
             Map.entry("info", AttributeValue.builder().s(product.getInfo()).build()),
             Map.entry("area", AttributeValue.builder().s(product.getArea().getKey()).build()),
             Map.entry("price", AttributeValue.builder().n(String.valueOf(product.getPrice())).build()),
-            Map.entry("option", AttributeValue.builder().s(product.getOption()).build()),
-            Map.entry("reviews", AttributeValue.builder().l(product.getReviews().parallelStream().map(review -> 
-                AttributeValue.builder().m(Map.ofEntries(
-                    Map.entry("user_id", AttributeValue.builder().s(review.getUserId()).build()),
-                    Map.entry("title", AttributeValue.builder().s(review.getTitle()).build()),
-                    Map.entry("description", AttributeValue.builder().s(review.getDescription()).build()),
-                    Map.entry("rate", AttributeValue.builder().n(String.valueOf(review.getRate())).build()))
-                ).build()
+            Map.entry("option", AttributeValue.builder().l(product.getOptions().parallelStream().map(option ->
+                    AttributeValue.builder().m(Map.ofEntries(
+                            Map.entry("option_id", AttributeValue.builder().s(option.getId()).build()),
+                            Map.entry("description", AttributeValue.builder().s(option.getDescription()).build()),
+                            Map.entry("date", AttributeValue.builder().s(option.getDate()).build()),
+                            Map.entry("amount", AttributeValue.builder().n(Long.toString(option.getAmount())).build()))
+                    ).build()
             ).collect(Collectors.toList())).build()),
+            Map.entry("reviews", AttributeValue.builder().l(product.getReviews().parallelStream().map(review -> 
+                    AttributeValue.builder().m(Map.ofEntries(
+                            Map.entry("user_id", AttributeValue.builder().s(review.getUserId()).build()),
+                            Map.entry("title", AttributeValue.builder().s(review.getTitle()).build()),
+                            Map.entry("description", AttributeValue.builder().s(review.getDescription()).build()),
+                            Map.entry("rate", AttributeValue.builder().n(String.valueOf(review.getRate())).build()))
+                    ).build()
+            ).collect(Collectors.toSet())).build()),
             Map.entry("date", AttributeValue.builder().s(product.getDate()).build())
         );
     }

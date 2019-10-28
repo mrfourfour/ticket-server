@@ -15,6 +15,7 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -41,7 +42,7 @@ public class TicketcrudTests {
                 .userId("왕밤빵")
                 .totalPrice(30000L)
                 .amount(3)
-                .qrData("guegue")
+//                .qrData("guegue")
                 .date(LocalDateTime.now().toString())
                 .status(Ticket.TicketStatus.NOT_USED)
                 .build();
@@ -85,7 +86,14 @@ public class TicketcrudTests {
                 .info("설명충은 사양아에요.")
                 .area(Product.ProductArea.JEJU)
                 .price(30000L)
-                .option("dummy")
+                .options(List.of(
+                        Product.ProductOption.builder()
+                            .id(UUID.randomUUID().toString())
+                            .amount(99L)
+                            .date(LocalDateTime.of(2019, 11, 1, 9, 0, 0).toString())
+                            .description("설명테스트에요")
+                            .build()
+                ))
                 .date(LocalDateTime.now().toString())
                 .build();
 
