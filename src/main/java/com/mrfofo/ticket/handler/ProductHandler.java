@@ -1,8 +1,5 @@
 package com.mrfofo.ticket.handler;
 
-import com.mrfofo.ticket.exception.NotEqualException;
-import com.mrfofo.ticket.model.Product;
-import com.mrfofo.ticket.model.Product.Review;
 import com.mrfofo.ticket.payload.ReviewPayLoad;
 import com.mrfofo.ticket.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;

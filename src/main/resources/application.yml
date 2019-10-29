@@ -1,13 +1,15 @@
-security:
-  jwt:
-    auth-header-name: Authorization
-    aws:
-      user-pool-id: ${AWS_COGNITO_USER_POOL_ID}
-      region: ap-northeast-2
-      cognito-identity-pool-url:
-      cognito-identity-pool-url-suffix:
-      jwkUrl:
-      user-name-field: cognito:username
-      groups-field: cognito:groups
-      connection-timeout: 2000
-      read-timeout: 2000
+
+
+cognito:
+  client: ${AWS_COGNITO_CLIENT_ID}
+  secret: ${AWS_COGNITO_CLIENT_SECRET}
+  domain: https://ticket-user.auth.${AWS_REGION}.amazoncognito.com
+  # callback: http://localhost:8080/login/oauth2/code/cognito
+  callback: http://localhost:8080/auth/token
+  jwk: https://cognito-idp.${AWS_REGION}.amazonaws.com/${AWS_COGNITO_POOL_ID}/.well-known/jwks.json
+  endpoints:
+    authorize: ${cognito.domain}/oauth2/authorize?response_type=code&scope_id=openid+email&client_id=${AWS_COGNITO_CLIENT_ID}&redirect_uri=${cognito.callback}
+    token: ${cognito.domain}/oauth2/token
+  connectTimeout: 5000
+  readTimeout: 5000
+

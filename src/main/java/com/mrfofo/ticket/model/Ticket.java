@@ -1,7 +1,5 @@
 package com.mrfofo.ticket.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -17,6 +15,13 @@ import java.util.Map;
 @NoArgsConstructor
 @Builder
 public class Ticket implements Serializable {
+    /**
+     *
+     */
+    private static final long serialVersionUID = -3033285755310897632L;
+
+
+    
     private String id;
     private TicketStatus status;
     private Integer amount;
