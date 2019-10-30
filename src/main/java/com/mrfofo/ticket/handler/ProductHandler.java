@@ -2,8 +2,12 @@ package com.mrfofo.ticket.handler;
 
 import com.mrfofo.ticket.payload.ReviewPayLoad;
 import com.mrfofo.ticket.repository.ProductRepository;
+import com.mrfofo.ticket.security.service.AuthService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -11,6 +15,7 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.text.ParseException;
 import java.util.Map;
 
 import static org.springframework.web.reactive.function.BodyInserters.fromObject;
@@ -22,6 +27,7 @@ import static org.springframework.web.reactive.function.BodyInserters.fromObject
 public class ProductHandler {
 
     private final ProductRepository repository;
+    private final AuthService authService;
 
     public Mono<ServerResponse> findByAreaAndCategory(ServerRequest serverRequest) {
         String area = serverRequest.pathVariable("area").toUpperCase();
@@ -41,13 +47,19 @@ public class ProductHandler {
     }
 
     public Mono<ServerResponse> saveReview(ServerRequest serverRequest) {
-        // TODO 검증위한 테스트 코드 필요.
-        return serverRequest.bodyToMono(ReviewPayLoad.class)
-                .flatMap(reviewPayLoad -> repository.findById(reviewPayLoad.getProductId())
-                .flatMap(product -> Mono.just(product.getReviews().contains(reviewPayLoad.getReview()))))
-                .flatMap(result -> result
-                        ? ServerResponse.ok().body(BodyInserters.fromObject(Map.of("data", true)))
-                        : ServerResponse.badRequest().body(BodyInserters.fromObject(Map.of("data", false))));
+        try {
+            String uuid = authService.getClaims().getUuid();
+            // TODO 검증위한 테스트 코드 필요.
+            return serverRequest.bodyToMono(ReviewPayLoad.class)
+                    .flatMap(reviewPayLoad -> repository.findById(reviewPayLoad.getProductId())
+                    .flatMap(product -> Mono.just(product.getReviews().contains(reviewPayLoad.getReview()))))
+                    .flatMap(result -> result
+                            ? ServerResponse.ok().body(BodyInserters.fromObject(Map.of("data", true)))
+                            : ServerResponse.badRequest().body(BodyInserters.fromObject(Map.of("data", false))));
+        } catch (ParseException e) {
+            return ServerResponse.status(HttpStatus.UNAUTHORIZED).body(BodyInserters.fromObject(e.getMessage()));
+        }
+        
     }
 
     // public Mono<ServerResponse> save(ServerRequest serverRequest) {
