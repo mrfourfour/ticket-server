@@ -4,6 +4,7 @@ cognito:
   client: ${AWS_COGNITO_CLIENT_ID}
   secret: ${AWS_COGNITO_CLIENT_SECRET}
   domain: https://ticket-user.auth.${AWS_REGION}.amazoncognito.com
+  # callback: http://localhost:8080/login/oauth2/code/cognito
   callback: http://localhost:8080/auth/token
   jwk: https://cognito-idp.${AWS_REGION}.amazonaws.com/${AWS_COGNITO_POOL_ID}/.well-known/jwks.json
   endpoints:
