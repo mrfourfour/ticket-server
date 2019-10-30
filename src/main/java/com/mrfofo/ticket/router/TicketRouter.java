@@ -36,7 +36,7 @@ public class TicketRouter {
                         .andRoute(GET("/area/{area}/category/{category}"), productHandler::findByAreaAndCategory)
                         .andRoute(GET("/{id}"), productHandler::findById)
                         .andRoute(POST("/{id}"), productHandler::saveReview)
-                        .andRoute(POST("/{id}/option"), productHandler::addOption)
+                        // .andRoute(POST("/{id}/option"), productHandler::addOption)
                 )
 
                 .andNest(path("/api/category"),

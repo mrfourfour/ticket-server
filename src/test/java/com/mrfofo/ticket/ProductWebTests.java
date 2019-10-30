@@ -1,6 +1,7 @@
 package com.mrfofo.ticket;
 
 import com.mrfofo.ticket.model.Ticket;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,8 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import reactor.core.publisher.Mono;
-
-import static org.springframework.web.reactive.function.BodyInserters.fromObject;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,6 +28,31 @@ public class ProductWebTests {
     @Autowired
     public WebTestClient webTestClient;
 
+    public Product mockProduct;
+
+    @Before
+    public void before() {
+        mockProduct = Product.builder()
+                .id(UUID.randomUUID().toString())
+                .name("웹테스트")
+                .sellerId("Seller-1")
+                .image("https://avatars0.githubusercontent.com/u/54847050?s=200&v=4")
+                .category(Product.ProductCategory.LEISURE)
+                .subCategory(Product.ProductSubCategory.LAND)
+                .info("잘되나요?")
+                .area(Product.ProductArea.JEJU)
+                .price(30000L)
+                .options(List.of(
+                        Product.ProductOption.builder()
+                                .id(UUID.randomUUID().toString())
+                                .amount(99L)
+                                .date(LocalDateTime.of(2019, 11, 1, 9, 0, 0).toString())
+                                .description("설명테스트에요")
+                                .build()
+                ))
+                .date(LocalDateTime.now().toString())
+                .build();
+    }
     @Test
     @Ignore
     public void createProductTest() {
@@ -101,6 +125,14 @@ public class ProductWebTests {
                 .userId(userId)
                 .build();
 
+
+
+    }
+
+    @Test
+    @Ignore
+    public void addReview() {
+        // mockProduct에 등록 할 예정.
 
 
     }

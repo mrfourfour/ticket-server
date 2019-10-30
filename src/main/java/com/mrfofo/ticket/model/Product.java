@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 @Data
@@ -14,6 +11,12 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product implements Serializable {
+    /**
+     *
+     */
+    private static final long serialVersionUID = -1840031954713669914L;
+
+    
     private String id;
     private String date;
     private String name;

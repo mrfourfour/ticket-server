@@ -1,6 +1,5 @@
 package com.mrfofo.ticket;
 
-import com.mrfofo.ticket.model.Product;
 import com.mrfofo.ticket.model.Ticket;
 import org.junit.Ignore;
 import org.junit.Test;

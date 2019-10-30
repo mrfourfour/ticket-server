@@ -1,8 +1,5 @@
 package com.mrfofo.ticket.handler;
 
-import com.mrfofo.ticket.exception.NotEqualException;
-import com.mrfofo.ticket.model.Product;
-import com.mrfofo.ticket.model.Product.Review;
 import com.mrfofo.ticket.payload.ReviewPayLoad;
 import com.mrfofo.ticket.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +22,6 @@ import static org.springframework.web.reactive.function.BodyInserters.fromObject
 public class ProductHandler {
 
     private final ProductRepository repository;
-    private final ErrorHandler errorHandler;
 
     public Mono<ServerResponse> findByAreaAndCategory(ServerRequest serverRequest) {
         String area = serverRequest.pathVariable("area").toUpperCase();
@@ -52,12 +48,6 @@ public class ProductHandler {
                 .flatMap(result -> result
                         ? ServerResponse.ok().body(BodyInserters.fromObject(Map.of("data", true)))
                         : ServerResponse.badRequest().body(BodyInserters.fromObject(Map.of("data", false))));
-    }
-
-    public Mono<ServerResponse> addOption(ServerRequest serverRequest) {
-        String id = serverRequest.pathVariable("id");
-
-        return null;
     }
 
     // public Mono<ServerResponse> save(ServerRequest serverRequest) {

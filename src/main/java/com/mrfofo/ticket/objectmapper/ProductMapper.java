@@ -30,7 +30,7 @@ public class ProductMapper implements DynamoDbMapper<Product>{
                         .amount(Long.parseLong(optionMap.get("amount").n()))
                         .build()
         ).collect(Collectors.toList()))
-        .reviews(map.get("reviews").l().parallelStream().map(AttributeValue::m).map(valueMap -> 
+        .reviews(map.get("reviews").l().parallelStream().map(AttributeValue::m).map(valueMap ->
                 Review.builder()
                         .userId(valueMap.get("user_id").s())
                         .title(valueMap.get("title").s())
@@ -66,7 +66,7 @@ public class ProductMapper implements DynamoDbMapper<Product>{
                             Map.entry("amount", AttributeValue.builder().n(Long.toString(option.getAmount())).build()))
                     ).build()
             ).collect(Collectors.toList())).build()),
-            Map.entry("reviews", AttributeValue.builder().l(product.getReviews().parallelStream().map(review -> 
+            Map.entry("reviews", AttributeValue.builder().l(product.getReviews().parallelStream().map(review ->
                     AttributeValue.builder().m(Map.ofEntries(
                             Map.entry("user_id", AttributeValue.builder().s(review.getUserId()).build()),
                             Map.entry("title", AttributeValue.builder().s(review.getTitle()).build()),
