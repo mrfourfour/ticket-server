@@ -12,7 +12,8 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
     public Mono<Authentication> authenticate(Authentication authentication) {
         if (authentication instanceof CognitoAuthenticationToken) {
             authentication.setAuthenticated(true);
+            return Mono.just(authentication);
         }
-        return Mono.just(authentication);
+        return Mono.empty();
     }
 }
