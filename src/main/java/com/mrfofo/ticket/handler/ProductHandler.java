@@ -22,7 +22,6 @@ import static org.springframework.web.reactive.function.BodyInserters.fromObject
 public class ProductHandler {
 
     private final ProductRepository repository;
-    private final ErrorHandler errorHandler;
 
     public Mono<ServerResponse> findByAreaAndCategory(ServerRequest serverRequest) {
         String area = serverRequest.pathVariable("area").toUpperCase();

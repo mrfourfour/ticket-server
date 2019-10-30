@@ -14,8 +14,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import reactor.core.publisher.Mono;
 
-import static org.springframework.web.reactive.function.BodyInserters.fromObject;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;

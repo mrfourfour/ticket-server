@@ -1,4 +1,4 @@
-package com.mrfofo.ticket.security.manager;
+package com.mrfofo.ticket.security.config;
 
 import com.mrfofo.ticket.security.cognito.CognitoAuthenticationToken;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;

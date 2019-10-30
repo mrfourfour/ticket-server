@@ -1,4 +1,4 @@
-package com.mrfofo.ticket.security.cognito;
+package com.mrfofo.ticket.model;
 
 import java.util.Date;
 
@@ -13,14 +13,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TokenClaims {
+public class User {
     @JsonProperty("uuid")
     private String uuid;
     @JsonProperty("auth_time")
     private Long authTime;
     private Date issued;
     private Date expire;
-    // private String name;
     private String cognitoUserName;
-    // private String email;
 }

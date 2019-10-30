@@ -1,7 +1,7 @@
 package com.mrfofo.ticket.security.service;
 
 import com.mrfofo.ticket.security.cognito.CognitoJWT;
-import com.mrfofo.ticket.security.cognito.TokenClaims;
+import com.mrfofo.ticket.model.User;
 import com.nimbusds.jwt.JWTClaimsSet;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +38,11 @@ public class AuthService {
         String auth = Base64Utils.encodeToString(key.getBytes(StandardCharsets.UTF_8));
 
         LinkedMultiValueMap<String, String> headers = new LinkedMultiValueMap<>() {
+            /**
+             *
+             */
+            private static final long serialVersionUID = 1930960213794235157L;
+
             {
                 add("HeaderName", "value");
                 add("Authorization", "Basic " + auth);
@@ -52,18 +57,18 @@ public class AuthService {
         return client.postForObject(url, req, CognitoJWT.class);
     }
 
-    public TokenClaims getClaims() throws ParseException {
+    public User getClaims() throws ParseException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         JWTClaimsSet details = (JWTClaimsSet) authentication.getDetails();
         log.info(details.toJSONObject().toJSONString());
-        return TokenClaims.builder()
+        return User.builder()
                 .uuid(details.getStringClaim("sub"))
                 .authTime((Long) (details.getClaim("auth_time")))
                 .issued((Date) details.getClaim("iat"))
                 .expire((Date) details.getClaim("exp"))
-                .name(details.getStringClaim("name"))
+                // .name(details.getStringClaim("name"))
                 .cognitoUserName(details.getStringClaim("username"))
-                .email(details.getStringClaim("email"))
+                // .email(details.getStringClaim("email"))
                 .build();
     }
 }

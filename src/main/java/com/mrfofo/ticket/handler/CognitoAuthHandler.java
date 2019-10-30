@@ -2,7 +2,6 @@ package com.mrfofo.ticket.handler;
 
 import java.text.ParseException;
 
-import com.mrfofo.ticket.model.Product;
 import com.mrfofo.ticket.security.service.AuthService;
 
 import org.springframework.beans.factory.annotation.Value;
