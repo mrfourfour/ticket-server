@@ -1,6 +1,7 @@
 package com.mrfofo.ticket.handler;
 
 import com.mrfofo.ticket.model.Product;
+import com.mrfofo.ticket.model.Product.Review;
 import com.mrfofo.ticket.payload.ReviewPayLoad;
 import com.mrfofo.ticket.repository.ProductRepository;
 import com.mrfofo.ticket.security.service.AuthService;
@@ -50,37 +51,22 @@ public class ProductHandler {
     public Mono<ServerResponse> saveReview(ServerRequest serverRequest) {
         try {
             String uuid = authService.getClaims().getUuid();
-            return serverRequest.bodyToMono(ReviewPayLoad.class)
-                    .flatMap(reviewPayLoad -> repository.findById(reviewPayLoad.getProductId())
+            String productId = serverRequest.pathVariable("id");
+            return serverRequest.bodyToMono(Review.class)
+                    .flatMap(review -> repository.findById(productId)
                             .flatMap(product -> {
-                                Product.Review review = reviewPayLoad.getReview();
+                                review.setUserId(uuid);
                                 boolean isContain = product.getReviews().contains(review);
-                                if(isContain) {
+                                if(isContain) 
                                     return Mono.just(false);
-                                } else {
-                                    review.setUserId(uuid);
-                                    product.getReviews().add(review);
-                                    repository.update(product);
-                                    return Mono.just(true);   
-                                }
+                                
+                                product.getReviews().add(review);
+                                repository.update(product);
+                                return Mono.just(true);   
                             }))
                             .flatMap(result -> result
                                     ? ServerResponse.ok().body(BodyInserters.fromObject(Map.of("data", true)))
                                     : ServerResponse.badRequest().body(BodyInserters.fromObject(Map.of("data", false))));
-            
-            // Mono<Product> productMono = repository.findById(reviewPayLoadMono.flat);
-            // TODO 검증위한 테스트 코드 필요.
-            // return serverRequest.bodyToMono(ReviewPayLoad.class)
-            //         .flatMap(reviewPayLoad -> {
-            //                 boolean isContain = repository.findById(reviewPayLoad.getProductId())
-            //                         .filter(product -> product.getReviews().contains(reviewPayLoad.getReview()));
-            //                 if(isContain)
-            //         })
-                
-                    // .flatMap(product -> Mono.just(product.getReviews().contains(reviewPayLoad.getReview())))
-                    // .flatMap(result -> result
-                    //         ? ServerResponse.ok().body(BodyInserters.fromObject(Map.of("data", true)))
-                    //         : ServerResponse.badRequest().body(BodyInserters.fromObject(Map.of("data", false))));
         } catch (ParseException e) {
             return ServerResponse.status(HttpStatus.UNAUTHORIZED).body(BodyInserters.fromObject(e.getMessage()));
         }

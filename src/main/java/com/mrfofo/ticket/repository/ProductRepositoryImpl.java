@@ -105,26 +105,32 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Mono<Product> update(Product t) {
+    public Mono<Product> update(Product product) {
         Map<String, AttributeValueUpdate> reviewUpdate = Map.of(
                 "reviews",
                 AttributeValueUpdate.builder()
-                        .value(AttributeValue.builder().l(t.getReviews()
+                        .value(AttributeValue.builder().l(
+                                product.getReviews()
                                 .parallelStream()
-                                .map(review -> AttributeValue.builder().m(Map.ofEntries(
-                                        Map.entry("user_id", AttributeValue.builder().s(review.getUserId()).build()),
-                                        Map.entry("title", AttributeValue.builder().s(review.getTitle()).build()),
-                                        Map.entry("description", AttributeValue.builder().s(review.getDescription()).build()),
-                                        Map.entry("rate", AttributeValue.builder().n(String.valueOf(review.getRate())).build())
-                                )).build()).collect(Collectors.toSet())
+                                .map(review -> AttributeValue.builder()
+                                        .m(
+                                                Map.ofEntries(
+                                                    Map.entry("user_id", AttributeValue.builder().s(review.getUserId()).build()),
+                                                    Map.entry("title", AttributeValue.builder().s(review.getTitle()).build()),
+                                                    Map.entry("description", AttributeValue.builder().s(review.getDescription()).build()),
+                                                    Map.entry("rate", AttributeValue.builder().n(String.valueOf(review.getRate())).build())
+                                                )
+                                        ).build()
+                                )
+                                .collect(Collectors.toSet())
                         ).build())
                         .build()
-        .build();
+        );
         UpdateItemRequest updateItemRequest = UpdateItemRequest.builder()
             .tableName("ticket")
             .key(Map.of(
                 "PK", AttributeValue.builder().s("Product").build(),
-                "SK", AttributeValue.builder().s(t.getId()).build()
+                "SK", AttributeValue.builder().s(product.getId()).build()
             ))
             .attributeUpdates(reviewUpdate)
             .build();
