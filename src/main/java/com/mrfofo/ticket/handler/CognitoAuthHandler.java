@@ -29,7 +29,7 @@ public class CognitoAuthHandler {
 
     public Mono<ServerResponse> token(ServerRequest request) {
         String code = request.queryParam("code").orElseThrow(IllegalStateException::new);
-        return ServerResponse.ok().body(BodyInserters.fromObject(authService.getToken(code)));
+        return authService.getToken(code).flatMap(token -> ServerResponse.ok().body(BodyInserters.fromObject(token)));
     }
 
     public Mono<ServerResponse> getCurrentUser(ServerRequest request) {

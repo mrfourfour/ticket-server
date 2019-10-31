@@ -2,13 +2,17 @@ package com.mrfofo.ticket.repository;
 
 import com.mrfofo.ticket.model.Ticket;
 import com.mrfofo.ticket.objectmapper.TicketMapper;
+import com.mrfofo.ticket.security.service.AuthService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -20,24 +24,34 @@ public class TicketRepository implements DynamoDbRepository<Ticket, String> {
 
     private final TicketMapper ticketMapper;
     private final DynamoDbAsyncClient client;
-
+    private final AuthService authService;
     @Override
     public Flux<Ticket> findAll() {
-        CompletableFuture<QueryResponse> future = client.query(QueryRequest.builder()
-                .tableName("ticket")
-                .indexName("sortByDate")
-                .keyConditionExpression("PK = :pk")
-                .expressionAttributeValues(Map.of(":pk", AttributeValue.builder().s("Ticket").build()))
-                .scanIndexForward(true)
-                .build());
-
-        CompletableFuture<List<Ticket>> ticketListFuture = future
-                .thenApplyAsync(QueryResponse::items)
-                .thenApplyAsync(list -> list.parallelStream()
-                    .map(ticketMapper::toObj)
-                    .collect(Collectors.toList())
-                );
-        return Mono.fromFuture(ticketListFuture).flatMapMany(Flux::fromIterable);
+        try {
+            String userId = authService.getClaims().getUuid();
+            CompletableFuture<QueryResponse> future = client.query(QueryRequest.builder()
+                    .tableName("ticket")
+                    .indexName("sortByDate")
+                    .keyConditionExpression("PK = :pk")
+                    .filterExpression("user_id = :user_id")
+                    .expressionAttributeValues(Map.of(
+                        ":pk", AttributeValue.builder().s("Ticket").build(),
+                        ":user_id", AttributeValue.builder().s(userId).build())
+                    )
+                    .scanIndexForward(true)
+                    .build());
+    
+            CompletableFuture<List<Ticket>> ticketListFuture = future
+                    .thenApplyAsync(QueryResponse::items)
+                    .thenApplyAsync(list -> list.parallelStream()
+                        .map(ticketMapper::toObj)
+                        .collect(Collectors.toList())
+                    );
+            return Mono.fromFuture(ticketListFuture).flatMapMany(Flux::fromIterable);
+        } catch (ParseException pe) {
+            return Flux.empty();
+        }
+        
     }
 
     @Override
@@ -70,6 +84,12 @@ public class TicketRepository implements DynamoDbRepository<Ticket, String> {
 
     @Override
     public Mono<Void> delete() {
+        return null;
+    }
+
+    @Override
+    public Mono<Ticket> update(Ticket t) {
+        // TODO Auto-generated method stub
         return null;
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+import software.amazon.awssdk.utils.StringUtils;
 
 import java.text.ParseException;
 import java.time.LocalDateTime;
@@ -39,8 +40,15 @@ public class TicketHandler {
     }
 
     public Mono<ServerResponse> findById(ServerRequest serverRequest) {
-        final String id = serverRequest.pathVariable("id");
-        return repository.findById(id).flatMap(ticket -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(fromObject(Map.of("data", ticket))));
+        try {
+            String userId = authService.getClaims().getUuid();
+            final String id = serverRequest.pathVariable("id");
+            return repository.findById(id).flatMap(ticket -> StringUtils.equals(userId, id)
+                ? ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(fromObject(Map.of("data", ticket)))
+                : ServerResponse.status(HttpStatus.UNAUTHORIZED).body(BodyInserters.fromObject("남의 꺼 보는거 안대요 ㅎㅎ")));
+        } catch(ParseException e) {
+            return ServerResponse.status(HttpStatus.BAD_REQUEST).body(BodyInserters.fromObject("invalid Token"));
+        }
     }
 
     public Mono<ServerResponse> save(ServerRequest serverRequest) {
