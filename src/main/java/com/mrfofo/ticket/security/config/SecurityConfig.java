@@ -35,6 +35,7 @@ public class SecurityConfig {
                     .and()
                 .securityContextRepository(securityContextRepository)
                 .authenticationManager(authenticationManager)
+                .csrf().disable()
                 .build();
     }
 }
