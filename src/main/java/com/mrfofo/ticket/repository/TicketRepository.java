@@ -32,7 +32,8 @@ public class TicketRepository implements DynamoDbRepository<Ticket, String> {
             CompletableFuture<QueryResponse> future = client.query(QueryRequest.builder()
                     .tableName("ticket")
                     .indexName("sortByDate")
-                    .keyConditionExpression("PK = :pk and user_id = :user_id")
+                    .keyConditionExpression("PK = :pk")
+                    .filterExpression("user_id = :user_id")
                     .expressionAttributeValues(Map.of(
                         ":pk", AttributeValue.builder().s("Ticket").build(),
                         ":user_id", AttributeValue.builder().s(userId).build())
