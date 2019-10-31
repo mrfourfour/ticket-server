@@ -47,7 +47,6 @@ public class Product implements Serializable {
 
     @Getter
     @Setter
-    @EqualsAndHashCode(exclude={ "rate", "title", "description" })
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
@@ -56,6 +55,19 @@ public class Product implements Serializable {
         private String title;
         private String description;
         private Long rate;
+
+        @Override
+        public boolean equals(Object o) {
+            if(o instanceof Review) {
+                return this.userId.equals(((Review) o).userId);
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return userId.hashCode();
+        }
     }
 
     public enum ProductCategory {
@@ -73,6 +85,7 @@ public class Product implements Serializable {
         public String getKey() { return name(); }
         public String getValue() { return value; }
     }
+
     public enum ProductSubCategory {
         SEA("해양", ProductCategory.LEISURE),
         LAND("육상", ProductCategory.LEISURE),
