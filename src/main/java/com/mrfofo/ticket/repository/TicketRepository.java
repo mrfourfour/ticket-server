@@ -85,4 +85,10 @@ public class TicketRepository implements DynamoDbRepository<Ticket, String> {
     public Mono<Void> delete() {
         return null;
     }
+
+    @Override
+    public Mono<Ticket> update(Ticket t) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
