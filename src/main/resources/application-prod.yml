@@ -4,7 +4,7 @@ cognito:
   client: ${AWS_COGNITO_CLIENT_ID} 
   secret: ${AWS_COGNITO_CLIENT_SECRET}
   domain: https://ticket-user.auth.${AWS_REGION}.amazoncognito.com
-  callback: https://ticket.ap-northeast-2.elasticbeanstalk.com/auth/token
+  callback: https://gilson1.woochan.pe.kr/auth/token
   jwk: https://cognito-idp.${AWS_REGION}.amazonaws.com/${AWS_COGNITO_POOL_ID}/.well-known/jwks.json
   endpoints:
     authorize: ${cognito.domain}/oauth2/authorize?response_type=code&scope_id=openid+email&client_id=${AWS_COGNITO_CLIENT_ID}&redirect_uri=${cognito.callback}
