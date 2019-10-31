@@ -1,5 +1,4 @@
 #!/bin/bash
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-rm src/main/resources/application.yml && mv src/main/resources/application-prod.yml src/main/resources/application.yml
 docker build . -t $DOCKER_USERNAME/ticket
 docker push $DOCKER_USERNAME/ticket
