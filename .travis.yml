@@ -11,6 +11,10 @@ cache:
   directories:
   - "$HOME/.m2/repository"
   - "$HOME/.gradle"
+
+before_script:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then rm src/main/resources/application.yml && mv src/main/resources/application-prod.yml src/main/resources/application.yml; fi
+
 script: "./gradlew clean build"
 
 before_deploy:
